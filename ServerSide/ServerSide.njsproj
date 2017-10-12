@@ -41,6 +41,7 @@
     <Compile Include="api\routes\Routers.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app.js" />
     <Compile Include="database.js">
       <SubType>Code</SubType>
     </Compile>

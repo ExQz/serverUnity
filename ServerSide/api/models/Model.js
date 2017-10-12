@@ -7,7 +7,7 @@ var Model = {
         return db.query("select * from dailyleaderboard where id=?", [id], callback);
     },
     addTask: function (Model, callback) {
-        return db.query("Insert into dailyleaderboard values(?,?,?)", [Model.id, Model.Nick, Model.value], callback);
+        return db.query("Insert into dailyleaderboard values(?,?,?)", [Model.id, Model.nickName, Model.score], callback);
     },
     deleteTask: function (id, callback)
     {
@@ -15,7 +15,7 @@ var Model = {
     },
     updateTask: function (id, Model, callback)
     {
-        return db.query("update dailyleaderboard set nickName=?, score=? where id=?", [Model.Nick, Model.value, id], callback);
+        return db.query("update dailyleaderboard set nickName=?, score=? where id=?", [Model.nickName, Model.score, id], callback);
     }
 
 };

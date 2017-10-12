@@ -45,6 +45,7 @@ router.post('/api/', function (req, res, next)
         }
         else
         {
+            res.location('localhost:3000/api/' + count['insertId']);
             res.status(201);
             res.json(req.body);
             
