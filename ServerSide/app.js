@@ -25,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 //app.use('/users', users);
 app.use('/', Model);
+
+app.set('port', process.env.PORT || 300);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
