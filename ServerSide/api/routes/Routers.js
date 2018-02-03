@@ -4,24 +4,21 @@ var Model = require('../models/Model');
 var jwt = require('jsonwebtoken');
 var randomstring = require("randomstring");
 
-router.get('/api/daily/:id?', function (req, res, next)
-{
+router.get('/api/daily/:id?', function (req, res, next) {
     if (req.params.id) {
         Model.getTaskByIdDaily(req.params.id, function (err, rows) {
             if (err) {
                 res.json(err);
             }
             else {
-                if (rows < 3)
-                {
+                if (rows < 3) {
                     res.sendStatus(404);
                 }
-                else
-                {
+                else {
                     res.status(200);
                     res.json(rows);
                 }
-                
+
             }
         });
 
@@ -38,52 +35,50 @@ router.get('/api/daily/:id?', function (req, res, next)
     }
 
 });
-router.post('/api/daily/', ensureToken, function (req, res, next)
-{
+router.post('/api/daily/', ensureToken, function (req, res, next) {
     jwt.verify(req.token, req.header('secret_key'), function (err, data) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.addTaskDaily(req.body, function (err, count) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    res.location('localhost:3000/api/' + count['insertId']);
-                    res.status(201);
-                    res.json(req.body);
-
-                }
-            });
+    Model.addTaskDaily(req.body, function (err, count) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            res.location('localhost:3000/api/' + count['insertId']);
+            res.status(201);
+            res.json(req.body);
+
+        }
+    });
+    }
     });
 });
 
-router.delete('/api/daily/:id', ensureToken, function (req, res, next)
-{
+router.delete('/api/daily/:id', ensureToken, function (req, res, next) {
     jwt.verify(req.token, req.header('secret_key'), function (err, data) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.deleteTaskDaily(req.params.id, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log(rows);
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
+    Model.deleteTaskDaily(req.params.id, function (err, rows) {
+        if (err) {
+            res.json(err);
+        }
+        else {
+            console.log(rows);
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
 
-                }
-            });
         }
     });
-   
+    }
+    });
+
 });
 
 router.put('/api/daily/:id', ensureToken, function (req, res, next) {
@@ -91,24 +86,24 @@ router.put('/api/daily/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.updateTaskDaily(req.params.id, req.body, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
-
-
-
-                }
-            });
+    Model.updateTaskDaily(req.params.id, req.body, function (err, rows) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
+
+
+
+        }
+    });
+    }
     });
 });
 
@@ -131,24 +126,22 @@ router.post('/api/login', function (req, res) {
                     token: token
                 });
             }
-            else
-            {
+            else {
                 res.json(403, 'Fail to login wrong password');
             }
         }
     });
-    
+
 });
 
 router.post('/api/register', function (req, res) {
     var key = randomstring.generate(32);
-   
-    Model.registerUser(req.body, key , function (err, callback) {
+
+    Model.registerUser(req.body, key, function (err, callback) {
         if (err) {
             res.json(403, 'Registracion fail');
         }
-        else
-        {
+        else {
             res.status(200);
             res.json({
                 secret_key: key
@@ -158,7 +151,7 @@ router.post('/api/register', function (req, res) {
 });
 
 
-// weekly
+ //weekly
 router.get('/api/weekly/:id?', function (req, res, next) {
     if (req.params.id) {
         Model.getTaskByIdWeekly(req.params.id, function (err, rows) {
@@ -195,18 +188,18 @@ router.post('/api/weekly/', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.addTaskWeekly(req.body, function (err, count) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    res.location('localhost:3000/api/' + count['insertId']);
-                    res.status(201);
-                    res.json(req.body);
-
-                }
-            });
+    Model.addTaskWeekly(req.body, function (err, count) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            res.location('localhost:3000/api/' + count['insertId']);
+            res.status(201);
+            res.json(req.body);
+
+        }
+    });
+    }
     });
 });
 
@@ -215,23 +208,23 @@ router.delete('/api/weekly/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.deleteTaskWeekly(req.params.id, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log(rows);
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
-
-                }
-            });
+    Model.deleteTaskWeekly(req.params.id, function (err, rows) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            console.log(rows);
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
+
+        }
+    });
+    }
     });
 
 });
@@ -241,24 +234,24 @@ router.put('/api/weekly/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.updateTaskWeekly(req.params.id, req.body, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
-
-
-
-                }
-            });
+    Model.updateTaskWeekly(req.params.id, req.body, function (err, rows) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
+
+
+
+        }
+    });
+    }
     });
 });
 //monthly
@@ -298,18 +291,18 @@ router.post('/api/monthly/', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.addTaskMonthly(req.body, function (err, count) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    res.location('localhost:3000/api/' + count['insertId']);
-                    res.status(201);
-                    res.json(req.body);
-
-                }
-            });
+    Model.addTaskMonthly(req.body, function (err, count) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            res.location('localhost:3000/api/' + count['insertId']);
+            res.status(201);
+            res.json(req.body);
+
+        }
+    });
+    }
     });
 });
 
@@ -318,23 +311,23 @@ router.delete('/api/monthly/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.deleteTaskMonthly(req.params.id, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log(rows);
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
-
-                }
-            });
+    Model.deleteTaskMonthly(req.params.id, function (err, rows) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            console.log(rows);
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
+
+        }
+    });
+    }
     });
 
 });
@@ -344,27 +337,27 @@ router.put('/api/monthly/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.updateTaskMonthly(req.params.id, req.body, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
+    Model.updateTaskMonthly(req.params.id, req.body, function (err, rows) {
+        if (err) {
+            res.json(err);
+        }
+        else {
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
 
 
 
-                }
-            });
         }
     });
+    }
+    });
 });
-// all time
+ //all time
 router.get('/api/alltime/:id?', function (req, res, next) {
     if (req.params.id) {
         Model.getTaskByIdAllTime(req.params.id, function (err, rows) {
@@ -401,18 +394,18 @@ router.post('/api/alltime/', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.addTaskAllTime(req.body, function (err, count) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    res.location('localhost:3000/api/' + count['insertId']);
-                    res.status(201);
-                    res.json(req.body);
-
-                }
-            });
+    Model.addTaskAllTime(req.body, function (err, count) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            res.location('localhost:3000/api/' + count['insertId']);
+            res.status(201);
+            res.json(req.body);
+
+        }
+    });
+    }
     });
 });
 
@@ -421,23 +414,23 @@ router.delete('/api/alltime/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.deleteTaskAllTime(req.params.id, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    console.log(rows);
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
-
-                }
-            });
+    Model.deleteTaskAllTime(req.params.id, function (err, rows) {
+        if (err) {
+            res.json(err);
         }
+        else {
+            console.log(rows);
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
+
+        }
+    });
+    }
     });
 
 });
@@ -447,23 +440,23 @@ router.put('/api/alltime/:id', ensureToken, function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
-            Model.updateTaskAllTime(req.params.id, req.body, function (err, rows) {
-                if (err) {
-                    res.json(err);
-                }
-                else {
-                    if (rows['affectedRows'] === 0) {
-                        res.sendStatus(404);
-                    }
-                    else {
-                        res.status(200);
-                        res.json(rows);
-                    }
+    Model.updateTaskAllTime(req.params.id, req.body, function (err, rows) {
+        if (err) {
+            res.json(err);
+        }
+        else {
+            if (rows['affectedRows'] === 0) {
+                res.sendStatus(404);
+            }
+            else {
+                res.status(200);
+                res.json(rows);
+            }
 
 
 
-                }
-            });
+        }
+    });
         }
     });
 });
